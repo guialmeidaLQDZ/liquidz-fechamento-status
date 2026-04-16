@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fechamento Contábil Mensal — Liquidz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --off-white:   #F8F6F3;
+      --white:       #FFFFFF;
+      --black:       #000000;
+      --green:       #9BDB20;
+      --green-dark:  #7CAF34;
+      --green-light: #EBF8D2;
+      --green-mid:   #C3E979;
+      --yellow:      #FCE300;
+      --red:         #FA3A3D;
+      --orange:      #FC7B24;
+      --gray-light:  #E6E6E6;
+      --gray-mid:    #CCCCCC;
+      --gray:        #808080;
+      --gray-dark:   #444444;
+    }
+
+    body {
+      font-family: 'Manrope', Arial, sans-serif;
+      background: var(--off-white);
+      color: var(--black);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .top-bar { height: 5px; background: var(--green); width: 100%; }
+    .page { max-width: 920px; margin: 0 auto; padding: 40px 28px 64px; }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 24px; margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .header-left { display: flex; flex-direction: column; gap: 10px; }
+    .logo-text { font-size: 22px; font-weight: 800; letter-spacing: 0.08em; color: var(--black); }
+    .header-title { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.02em; line-height: 1.2; }
+    .header-sub { font-size: 13px; color: var(--gray); font-weight: 400; margin-top: 2px; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--black); color: var(--white);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 7px 16px; border-radius: 999px;
+    }
+    .status-pill-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .date-label { font-size: 12px; color: var(--gray); font-weight: 500; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gray); margin-bottom: 12px; margin-top: 36px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-light); }
+
+    /* ── OBJETIVO ── */
+    .objetivo-card {
+      background: var(--black); color: var(--white); border-radius: 12px;
+      padding: 24px 28px; font-size: 15px; font-weight: 500; line-height: 1.7;
+    }
+    .objetivo-card strong { color: var(--green); }
+
+    /* ── PROGRESS ── */
+    .progress-card {
+      background: var(--white); border-radius: 12px; padding: 24px 28px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07);
+    }
+    .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .progress-meta-label { font-size: 13px; font-weight: 600; color: var(--black); }
+    .progress-meta-value { font-size: 13px; font-weight: 700; color: var(--green-dark); }
+    .progress-track { height: 8px; background: var(--gray-light); border-radius: 999px; overflow: hidden; margin-bottom: 18px; }
+    .progress-fill { height: 100%; width: 35%; background: var(--green); border-radius: 999px; transition: width .5s ease; }
+    .phases { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .phase {
+      text-align: center; font-size: 11px; font-weight: 600;
+      padding: 7px 4px; border-radius: 6px;
+      background: var(--off-white); color: var(--gray);
+      border: 1.5px solid var(--gray-light); line-height: 1.3;
+    }
+    .phase.active { background: var(--black); border-color: var(--black); color: var(--green); }
+    @media (max-width: 600px) { .phases { grid-template-columns: repeat(3, 1fr); } }
+
+    /* ── GRID 2 ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 620px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ── CARD ── */
+    .card { background: var(--white); border-radius: 12px; padding: 22px 24px; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    .card-title { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--black); line-height: 1.5; }
+    .check-mark {
+      flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .check-mark.done  { background: var(--green-light); color: var(--green-dark); font-size: 10px; font-weight: 700; }
+    .check-mark.new   { background: var(--green); color: var(--black); font-size: 10px; font-weight: 700; }
+    .check-mark.info  { background: #F0F0F0; color: var(--gray); font-size: 10px; font-weight: 700; }
+
+    code.inline {
+      font-size: 11px; background: var(--off-white); border: 1px solid var(--gray-light);
+      color: var(--gray-dark); padding: 1px 6px; border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* ── BLOCKERS ── */
+    .blocker {
+      background: var(--white); border-radius: 12px; padding: 18px 22px;
+      display: flex; align-items: flex-start; gap: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.07); border-left: 4px solid transparent;
+    }
+    .blocker + .blocker { margin-top: 10px; }
+    .blocker.critical { border-left-color: var(--red); }
+    .blocker.warning  { border-left-color: var(--yellow); }
+    .blocker.resolved { border-left-color: var(--green); }
+    .blocker-icon-wrap { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
+    .blocker-icon-wrap.critical  { background: #FEE2E2; }
+    .blocker-icon-wrap.warning   { background: #FEF9C3; }
+    .blocker-icon-wrap.resolved  { background: var(--green-light); }
+    .blocker-body { flex: 1; }
+    .blocker-title { font-size: 14px; font-weight: 700; color: var(--black); }
+    .blocker-title.strikethrough { text-decoration: line-through; color: var(--gray); }
+    .blocker-desc { font-size: 12px; color: var(--gray); margin-top: 3px; line-height: 1.5; }
+    .blocker-badge {
+      flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 999px;
+      align-self: flex-start; margin-top: 2px;
+    }
+    .blocker-badge.critical  { background: #FA3A3D22; color: var(--red); }
+    .blocker-badge.warning   { background: #FCE30033; color: #8a7500; }
+    .blocker-badge.resolved  { background: var(--green-light); color: var(--green-dark); }
+    .blocker-badge.internal  { background: #F0F0F0; color: var(--gray-dark); }
+
+    /* ── PLATFORMS TABLE ── */
+    .table-wrap { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--black); }
+    th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); padding: 12px 16px; }
+    td { padding: 12px 16px; font-size: 13px; color: var(--black); border-bottom: 1px solid var(--gray-light); vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:nth-child(even) td { background: #FAFAF8; }
+    .plat-name { font-weight: 700; }
+    .plat-desc { color: var(--gray); font-size: 12px; }
+    .plat-auth { font-size: 11px; color: var(--gray); font-family: 'Courier New', monospace; }
+    .badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+    .badge-blocked  { background: #FA3A3D22; color: var(--red); }
+    .badge-pending  { background: #FCE30033; color: #7a6800; }
+    .badge-ready    { background: var(--green-light); color: var(--green-dark); }
+    .badge-internal { background: #F0F0F0; color: var(--gray-dark); }
+
+    /* ── ARCHITECTURE ── */
+    .arch-list { display: flex; flex-direction: column; gap: 0; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    .arch-item { display: flex; align-items: center; gap: 18px; padding: 18px 24px; border-bottom: 1px solid var(--gray-light); }
+    .arch-item:last-child { border-bottom: none; }
+    .arch-item.current { background: var(--green-light); }
+    .arch-num {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--off-white); border: 1.5px solid var(--gray-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: var(--gray); flex-shrink: 0;
+    }
+    .arch-item.current .arch-num { background: var(--black); border-color: var(--black); color: var(--green); }
+    .arch-name { font-size: 14px; font-weight: 700; color: var(--black); }
+    .arch-desc { font-size: 12px; color: var(--gray); margin-top: 2px; }
+    .arch-tag { margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--green); color: var(--black); padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+
+    /* ── NEXT STEPS ── */
+    .next-list { display: flex; flex-direction: column; gap: 10px; }
+    .next-item { background: var(--white); border-radius: 12px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.07); }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--black); color: var(--white); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .step-num.urgent    { background: var(--red); }
+    .step-num.secondary { background: var(--green); color: var(--black); }
+    .step-num.done-num  { background: var(--green-light); color: var(--green-dark); }
+    .step-body {}
+    .step-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .step-title { font-size: 14px; font-weight: 700; color: var(--black); }
+    .step-title.done-text { text-decoration: line-through; color: var(--gray); }
+    .step-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 2px 9px; border-radius: 999px; }
+    .step-tag.blocked   { background: #FA3A3D22; color: var(--red); }
+    .step-tag.do-now    { background: var(--green-light); color: var(--green-dark); }
+    .step-tag.has-doc   { background: #E6E6E6; color: #444; }
+    .step-tag.done-tag  { background: var(--green-light); color: var(--green-dark); }
+    .step-tag.today     { background: var(--yellow); color: var(--black); }
+    .step-detail { font-size: 12px; color: var(--gray); margin-top: 5px; line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    .footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--gray-light); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-text { font-size: 12px; color: var(--gray-mid); font-weight: 500; }
+    .footer-brand { font-size: 14px; font-weight: 800; letter-spacing: 0.06em; color: var(--gray-mid); }
+  </style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-text">LIQUIDZ</div>
+      <div>
+        <div class="header-title">Fechamento Contábil Mensal</div>
+        <div class="header-sub">Status do projeto · atualizado em 16 abr 2026</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-pill">
+        <div class="status-pill-dot"></div>
+        Etapa 0 — Discovery
+      </div>
+      <div class="date-label">16 abr 2026</div>
+    </div>
+  </div>
+
+  <!-- ── OBJETIVO ── -->
+  <div class="section-label">Objetivo do Projeto</div>
+  <div class="objetivo-card">
+    Automatizar o fechamento contábil mensal com <strong>Claude AI como copiloto</strong> do time financeiro.
+    Coletar dados de 4 plataformas, classificar lançamentos, cruzar NFs x financeiro e gerar
+    <strong>Balancete + DRE</strong> no Google Sheets — eliminando dias de trabalho manual.
+  </div>
+
+  <!-- ── PROGRESS ── -->
+  <div class="section-label">Progresso</div>
+  <div class="progress-card">
+    <div class="progress-meta">
+      <span class="progress-meta-label">Avanço geral do projeto</span>
+      <span class="progress-meta-value">Discovery quase concluído</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+    <div class="phases">
+      <div class="phase active">0 · Discovery<br/><span style="color:#9BDB20;font-size:10px">← agora</span></div>
+      <div class="phase">1 · Conectores</div>
+      <div class="phase">2 · Motor Claude</div>
+      <div class="phase">3 · Relatórios</div>
+      <div class="phase">4 · Interface</div>
+    </div>
+  </div>
+
+  <!-- ── STATUS ATUAL ── -->
+  <div class="section-label">Status Atual</div>
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="card-title">Concluído hoje · 16/04</div>
+      <ul class="checklist">
+        <li>
+          <span class="check-mark new">★</span>
+          <span><strong>Bling — App OAuth criado</strong> em developer.bling.com.br. Escopos: NF-e, Pagar, Receber, Pedidos de Compra e Venda. Credenciais salvas no .env.</span>
+        </li>
+        <li>
+          <span class="check-mark new">★</span>
+          <span><strong>Kamino — Credenciais sandbox recebidas.</strong> Acesso ao painel sandbox ativo. Credenciais salvas no .env.</span>
+        </li>
+        <li>
+          <span class="check-mark new">★</span>
+          <span><strong>Reunião time financeiro realizada.</strong> Documento executivo apresentado. Tasks a subir no ClickUp.</span>
+        </li>
+        <li>
+          <span class="check-mark done">✓</span>
+          <span><strong>SIEG — API Key recebida</strong> em 16/04/2026. Integração fiscal desbloqueada.</span>
+        </li>
+        <li>
+          <span class="check-mark done">✓</span>
+          API Kamino 100% documentada — 58 endpoints mapeados
+        </li>
+        <li>
+          <span class="check-mark done">✓</span>
+          Arquitetura de 4 fases definida. Backlog completo organizado.
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Pendente</div>
+      <ul class="checklist">
+        <li>
+          <span class="check-mark info">!</span>
+          <strong>Google Cloud</strong> — ativar Drive API v3 + Sheets API v4 + criar Service Account
+        </li>
+        <li>
+          <span class="check-mark info">!</span>
+          <strong>Plano de Contas</strong> — obter exportação do time financeiro (necessário para o Motor Claude)
+        </li>
+        <li>
+          <span class="check-mark info">!</span>
+          <strong>Tasks no ClickUp</strong> — subir backlog após a reunião de hoje
+        </li>
+        <li>
+          <span class="check-mark info">!</span>
+          <strong>Bling — primeiro token OAuth</strong> — rodar <code class="inline">node setup-bling.js</code> para gerar access token
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ── BLOQUEADORES ── -->
+  <div class="section-label">Bloqueadores</div>
+
+  <div class="blocker resolved">
+    <div class="blocker-icon-wrap resolved">✅</div>
+    <div class="blocker-body">
+      <div class="blocker-title strikethrough">SIEG — API Key</div>
+      <div class="blocker-desc">Recebida em 16/04/2026. Conector SIEG desbloqueado para desenvolvimento.</div>
+    </div>
+    <span class="blocker-badge resolved">Resolvido</span>
+  </div>
+
+  <div class="blocker resolved">
+    <div class="blocker-icon-wrap resolved">✅</div>
+    <div class="blocker-body">
+      <div class="blocker-title strikethrough">Bling — App OAuth</div>
+      <div class="blocker-desc">App criado em 16/04/2026. Escopos: NF-e, Pagar, Receber, Pedidos. Credenciais em .env.</div>
+    </div>
+    <span class="blocker-badge resolved">Resolvido · 16/04</span>
+  </div>
+
+  <div class="blocker resolved">
+    <div class="blocker-icon-wrap resolved">✅</div>
+    <div class="blocker-body">
+      <div class="blocker-title strikethrough">Kamino — Credenciais sandbox</div>
+      <div class="blocker-desc">Credenciais recebidas em 16/04/2026. Acesso ao painel sandbox ativo. Desenvolvimento do conector pode iniciar.</div>
+    </div>
+    <span class="blocker-badge resolved">Resolvido · 16/04</span>
+  </div>
+
+  <div class="blocker warning">
+    <div class="blocker-icon-wrap warning">🟡</div>
+    <div class="blocker-body">
+      <div class="blocker-title">Google Cloud — Setup de infraestrutura</div>
+      <div class="blocker-desc">Ativar Drive API v3 + Sheets API v4, criar Service Account. Projeto GCP já existe (196349794395). Independente de terceiros — pode ser feito agora.</div>
+    </div>
+    <span class="blocker-badge internal">Próximo</span>
+  </div>
+
+  <div class="blocker warning">
+    <div class="blocker-icon-wrap warning">🟡</div>
+    <div class="blocker-body">
+      <div class="blocker-title">Plano de Contas — necessário para o Motor Claude</div>
+      <div class="blocker-desc">Claude precisa do plano de contas real da Liquidz para classificar os lançamentos. Obter do time financeiro em qualquer formato.</div>
+    </div>
+    <span class="blocker-badge internal">Time financeiro</span>
+  </div>
+
+  <!-- ── PLATAFORMAS ── -->
+  <div class="section-label">Plataformas & Integrações</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Plataforma</th>
+          <th>O que fornece</th>
+          <th>Autenticação</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="plat-name">SIEG</span></td>
+          <td><span class="plat-desc">XMLs NF-e, relatórios fiscais, PDFs, manifestação</span></td>
+          <td><span class="plat-auth">?api_key=</span></td>
+          <td><span class="badge badge-ready">✓ API Key recebida</span></td>
+        </tr>
+        <tr>
+          <td><span class="plat-name">Kamino</span></td>
+          <td><span class="plat-desc">Movimentações financeiras, pagamentos, recebimentos, transferências</span></td>
+          <td><span class="plat-auth">5 headers proprietários</span></td>
+          <td><span class="badge badge-ready">✓ Sandbox ativo</span></td>
+        </tr>
+        <tr>
+          <td><span class="plat-name">Bling</span></td>
+          <td><span class="plat-desc">Pedidos, NFs emitidas, contas a pagar e a receber</span></td>
+          <td><span class="plat-auth">OAuth 2.0 Bearer</span></td>
+          <td><span class="badge badge-ready">✓ App OAuth criado</span></td>
+        </tr>
+        <tr>
+          <td><span class="plat-name">Google Drive/Sheets</span></td>
+          <td><span class="plat-desc">Armazenamento de relatórios, Balancete, DRE e interface de revisão</span></td>
+          <td><span class="plat-auth">Service Account</span></td>
+          <td><span class="badge badge-pending">Setup a fazer</span></td>
+        </tr>
+        <tr>
+          <td><span class="plat-name">Claude AI</span></td>
+          <td><span class="plat-desc">Classificação de lançamentos, cruzamento NF × financeiro, alertas de divergência</span></td>
+          <td><span class="plat-auth">Anthropic API Key</span></td>
+          <td><span class="badge badge-ready">✓ Conta ativa</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── ARQUITETURA ── -->
+  <div class="section-label">Arquitetura — 4 Fases</div>
+  <div class="arch-list">
+    <div class="arch-item current">
+      <div class="arch-num">0</div>
+      <div>
+        <div class="arch-name">Discovery</div>
+        <div class="arch-desc">Documentar APIs, mapear processo do time financeiro, desbloquear acessos e definir backlog completo</div>
+      </div>
+      <span class="arch-tag">← Agora</span>
+    </div>
+    <div class="arch-item">
+      <div class="arch-num">1</div>
+      <div>
+        <div class="arch-name">Conectores Python</div>
+        <div class="arch-desc">Scripts que puxam dados de SIEG, Kamino e Bling, normalizam e salvam em formato padronizado</div>
+      </div>
+    </div>
+    <div class="arch-item">
+      <div class="arch-num">2</div>
+      <div>
+        <div class="arch-name">Motor Claude AI</div>
+        <div class="arch-desc">Classifica lançamentos por centro de custo, cruza NF × financeiro, sinaliza divergências automaticamente</div>
+      </div>
+    </div>
+    <div class="arch-item">
+      <div class="arch-num">3</div>
+      <div>
+        <div class="arch-name">Relatórios Automáticos</div>
+        <div class="arch-desc">Balancete + DRE gerados no Google Sheets e arquivados no Drive com histórico mensal</div>
+      </div>
+    </div>
+    <div class="arch-item">
+      <div class="arch-num">4</div>
+      <div>
+        <div class="arch-name">Interface de Revisão <span style="font-size:11px;color:var(--gray);font-weight:400">(opcional)</span></div>
+        <div class="arch-desc">Google Sheets para o contador revisar e aprovar lançamentos antes de fechar o mês</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PRÓXIMOS PASSOS ── -->
+  <div class="section-label">Próximos Passos</div>
+  <div class="next-list">
+
+    <div class="next-item">
+      <div class="step-num done-num">✓</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title done-text">Receber API Key do SIEG</span>
+          <span class="step-tag done-tag">Concluído · 16/04</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="next-item">
+      <div class="step-num done-num">✓</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title done-text">Criar app OAuth no Bling</span>
+          <span class="step-tag done-tag">Concluído · 16/04</span>
+        </div>
+        <div class="step-detail">App criado com escopos NF-e, Pagar, Receber, Pedidos de Compra e Venda.</div>
+      </div>
+    </div>
+
+    <div class="next-item">
+      <div class="step-num done-num">✓</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title done-text">Obter credenciais Kamino sandbox</span>
+          <span class="step-tag done-tag">Concluído · 16/04</span>
+        </div>
+        <div class="step-detail">Acesso ao painel sandbox ativo. Conectores podem ser desenvolvidos e testados.</div>
+      </div>
+    </div>
+
+    <div class="next-item">
+      <div class="step-num done-num">✓</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title done-text">Reunião com time financeiro</span>
+          <span class="step-tag done-tag">Concluído · 16/04</span>
+        </div>
+        <div class="step-detail">Documento executivo apresentado. Próximo passo: subir tasks no ClickUp.</div>
+      </div>
+    </div>
+
+    <div class="next-item">
+      <div class="step-num urgent">1</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title">Setup Google Cloud</span>
+          <span class="step-tag do-now">Próximo</span>
+        </div>
+        <div class="step-detail">Ativar Drive API v3 + Sheets API v4, criar Service Account. Projeto GCP 196349794395 já existe.</div>
+      </div>
+    </div>
+
+    <div class="next-item">
+      <div class="step-num secondary">2</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title">Iniciar Conector SIEG</span>
+          <span class="step-tag do-now">Desbloqueado</span>
+        </div>
+        <div class="step-detail">Primeira integração a entrar em desenvolvimento — menor complexidade, API Key simples, documentação 100% pronta.</div>
+      </div>
+    </div>
+
+    <div class="next-item">
+      <div class="step-num secondary">3</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title">Obter Plano de Contas + exemplos de lançamentos</span>
+          <span class="step-tag has-doc">Time financeiro</span>
+        </div>
+        <div class="step-detail">Necessário para desenvolver o Motor Claude (Fase 2). Qualquer formato serve.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <div class="footer-brand">LIQUIDZ</div>
+    <div class="footer-text">Fechamento Contábil Mensal · Status em 16 abr 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
