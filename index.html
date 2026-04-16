@@ -127,10 +127,10 @@
     .blocker.critical { border-left-color: var(--red); }
     .blocker.warning  { border-left-color: var(--yellow); }
     .blocker.resolved { border-left-color: var(--green); }
-    .blocker-icon-wrap { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
-    .blocker-icon-wrap.critical  { background: #FEE2E2; }
-    .blocker-icon-wrap.warning   { background: #FEF9C3; }
-    .blocker-icon-wrap.resolved  { background: var(--green-light); }
+    .blocker-icon-wrap { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; font-weight: 800; }
+    .blocker-icon-wrap.critical  { background: #FEE2E2; color: var(--red); }
+    .blocker-icon-wrap.warning   { background: #FEF9C3; color: #8a7500; }
+    .blocker-icon-wrap.resolved  { background: var(--green-light); color: var(--green-dark); }
     .blocker-body { flex: 1; }
     .blocker-title { font-size: 14px; font-weight: 700; color: var(--black); }
     .blocker-title.strikethrough { text-decoration: line-through; color: var(--gray); }
@@ -314,7 +314,7 @@
   <div class="section-label">Bloqueadores</div>
 
   <div class="blocker resolved">
-    <div class="blocker-icon-wrap resolved">✅</div>
+    <div class="blocker-icon-wrap resolved">✓</div>
     <div class="blocker-body">
       <div class="blocker-title strikethrough">SIEG — API Key</div>
       <div class="blocker-desc">Recebida em 16/04/2026. Conector SIEG desbloqueado para desenvolvimento.</div>
@@ -323,7 +323,7 @@
   </div>
 
   <div class="blocker resolved">
-    <div class="blocker-icon-wrap resolved">✅</div>
+    <div class="blocker-icon-wrap resolved">✓</div>
     <div class="blocker-body">
       <div class="blocker-title strikethrough">Bling — App OAuth</div>
       <div class="blocker-desc">App criado em 16/04/2026. Escopos: NF-e, Pagar, Receber, Pedidos. Credenciais em .env.</div>
@@ -332,7 +332,7 @@
   </div>
 
   <div class="blocker resolved">
-    <div class="blocker-icon-wrap resolved">✅</div>
+    <div class="blocker-icon-wrap resolved">✓</div>
     <div class="blocker-body">
       <div class="blocker-title strikethrough">Kamino — Credenciais sandbox</div>
       <div class="blocker-desc">Credenciais recebidas em 16/04/2026. Acesso ao painel sandbox ativo. Desenvolvimento do conector pode iniciar.</div>
@@ -341,7 +341,7 @@
   </div>
 
   <div class="blocker warning">
-    <div class="blocker-icon-wrap warning">🟡</div>
+    <div class="blocker-icon-wrap warning">!</div>
     <div class="blocker-body">
       <div class="blocker-title">Google Cloud — Setup de infraestrutura</div>
       <div class="blocker-desc">Ativar Drive API v3 + Sheets API v4, criar Service Account. Projeto GCP já existe (196349794395). Independente de terceiros — pode ser feito agora.</div>
@@ -350,7 +350,7 @@
   </div>
 
   <div class="blocker warning">
-    <div class="blocker-icon-wrap warning">🟡</div>
+    <div class="blocker-icon-wrap warning">!</div>
     <div class="blocker-body">
       <div class="blocker-title">Plano de Contas — necessário para o Motor Claude</div>
       <div class="blocker-desc">Claude precisa do plano de contas real da Liquidz para classificar os lançamentos. Obter do time financeiro em qualquer formato.</div>
