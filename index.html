@@ -264,15 +264,19 @@
       <ul class="checklist">
         <li>
           <span class="check-mark new">★</span>
+          <span><strong>Fevereiro/2026 — pipeline completo em 13 min</strong> — 21.888 NF-e Bling, R$ 7.945.451,45 recebimentos Kamino. Balancete + DRE gerados. Task Vanda: #86ah1z79w.</span>
+        </li>
+        <li>
+          <span class="check-mark new">★</span>
           <span><strong>Pipeline completo — <code class="inline">run-fechamento.js</code></strong> — orquestra todas as 8 etapas em 1 comando: Kamino → Bling → SIEG → Drive → Motor IA → Fechamento → Sheets → Upload.</span>
         </li>
         <li>
           <span class="check-mark new">★</span>
-          <span><strong>Bling NF-e corrigido</strong> — bug <code class="inline">valorNota=0</code> resolvido. Chamada individual por NF-e; valor real: R$ 890.771,75 (115 notas). Situações mapeadas: 89 autorizadas, 25 aguardando, 1 denegada.</span>
+          <span><strong>Bling NF-e corrigido</strong> — filtro <code class="inline">tipo:'S'</code> removido: 115 notas → 21.888 notas. Situações mapeadas por tipo.</span>
         </li>
         <li>
           <span class="check-mark new">★</span>
-          <span><strong>SIEG — nova API v1 implementada</strong> — reescrito para <code class="inline">api.sieg.com/api/v1</code> com autenticação JWT + X-API-Key. Credenciais recebidas 22/04. Testando.</span>
+          <span><strong>SIEG — nova API v1 implementada</strong> — reescrito para <code class="inline">api.sieg.com/api/v1</code> com JWT + X-API-Key. Credenciais configuradas. JWT retorna 401 — suporte acionado 22/04.</span>
         </li>
         <li>
           <span class="check-mark done">✓</span>
@@ -294,11 +298,11 @@
       <ul class="checklist">
         <li>
           <span class="check-mark info">!</span>
-          <strong>Validação com Vanda</strong> — revisão da planilha março/2026: classificações, plano de contas, conciliações. Task no ClickUp: #86ah152gy.
+          <strong>Validação com Vanda — fevereiro/2026</strong> — planilha enviada, aguardando confirmação dos números (R$ 7.945.451,45 recebimentos, 21.888 NF-e). Task ClickUp: #86ah1z79w.
         </li>
         <li>
           <span class="check-mark info">!</span>
-          <strong>SIEG — teste com credenciais JWT</strong> — conector reescrito, credenciais configuradas. Aguardando confirmação do primeiro pull de XMLs.
+          <strong>SIEG — JWT retorna 401</strong> — conector implementado, credenciais corretas, mas <code class="inline">create-jwt</code> retorna 401 "SecretKey e ClientId obrigatórios". Suporte SIEG acionado via WhatsApp 22/04. Aguardando resposta.
         </li>
         <li>
           <span class="check-mark done">✓</span>
@@ -324,11 +328,20 @@
   <!-- ── BLOQUEADORES ── -->
   <div class="section-label">Bloqueadores</div>
 
+  <div class="blocker">
+    <div class="blocker-icon-wrap">!</div>
+    <div class="blocker-body">
+      <div class="blocker-title">SIEG JWT — 401 "SecretKey e ClientId são obrigatórios"</div>
+      <div class="blocker-desc">Credenciais recebidas e configuradas corretamente no <code class="inline">.env</code>. Endpoint <code class="inline">POST /api/v1/create-jwt</code> retorna 401 independente do formato (header, body JSON, camelCase, PascalCase). Suporte SIEG acionado via WhatsApp 22/04. Aguardando formato correto de autenticação.</div>
+    </div>
+    <span class="blocker-badge">Em resolução · 22/04</span>
+  </div>
+
   <div class="blocker resolved">
     <div class="blocker-icon-wrap resolved">✓</div>
     <div class="blocker-body">
-      <div class="blocker-title strikethrough">SIEG — API Key + credenciais JWT</div>
-      <div class="blocker-desc">API Key recebida em 16/04. Credenciais JWT (clientId + secretKey) recebidas em 22/04. Conector reescrito para nova API v1 (<code class="inline">api.sieg.com/api/v1</code>). Testando.</div>
+      <div class="blocker-title strikethrough">SIEG — Receber credenciais API</div>
+      <div class="blocker-desc">API Key recebida em 16/04. Credenciais JWT (clientId + secretKey) recebidas em 22/04. Conector reescrito para nova API v1.</div>
     </div>
     <span class="blocker-badge resolved">Resolvido · 22/04</span>
   </div>
@@ -386,7 +399,7 @@
           <td><span class="plat-name">SIEG</span></td>
           <td><span class="plat-desc">XMLs NF-e, relatórios fiscais, PDFs, manifestação</span></td>
           <td><span class="plat-auth">Bearer JWT + X-API-Key</span></td>
-          <td><span class="badge badge-pending">⚙ Testando credenciais JWT</span></td>
+          <td><span class="badge badge-blocked">✕ JWT 401 · suporte acionado</span></td>
         </tr>
         <tr>
           <td><span class="plat-name">Kamino</span></td>
@@ -527,13 +540,24 @@
     </div>
 
     <div class="next-item">
+      <div class="step-num done-num">✓</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title done-text">Validação com Vanda — março/2026</span>
+          <span class="step-tag done-tag">Feedback recebido · 22/04</span>
+        </div>
+        <div class="step-detail">Vanda identificou dados incompletos (SIEG pendente) e recomendou validar com fevereiro, cujos números estão confirmados. Março ficará pendente até SIEG funcionar.</div>
+      </div>
+    </div>
+
+    <div class="next-item">
       <div class="step-num urgent">→</div>
       <div class="step-body">
         <div class="step-title-row">
-          <span class="step-title">Validação com Vanda — março/2026</span>
+          <span class="step-title">Validação com Vanda — fevereiro/2026</span>
           <span class="step-tag today">Em andamento</span>
         </div>
-        <div class="step-detail">Task no ClickUp (#86ah152gy). Itens para revisão: 57 lançamentos sem plano de contas, 69 classificações com baixa confiança IA, 17 pagamentos sem conciliação bancária, 1 NF-e denegada, 25 aguardando SEFAZ. <a href="https://docs.google.com/spreadsheets/d/1AgRyrxRHAP77CdPsBupJxZkoT6Ttq2i-EZDaniuV-ow/edit" target="_blank" style="color:var(--green-dark)">Planilha →</a></div>
+        <div class="step-detail">Task no ClickUp (#86ah1z79w). Pipeline completo em 13 min: R$ 7.945.451,45 recebimentos | 21.888 NF-e Bling. Aguardando Vanda confirmar se bate com o balancete prévio.</div>
       </div>
     </div>
 
