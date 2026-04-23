@@ -243,9 +243,9 @@
   <div class="progress-card">
     <div class="progress-meta">
       <span class="progress-meta-label">Avanço geral do projeto</span>
-      <span class="progress-meta-value">95% — pipeline completo · validação com Vanda em andamento</span>
+      <span class="progress-meta-value">98% — SIEG funcional · DRE regime de competência implementado</span>
     </div>
-    <div class="progress-track"><div class="progress-fill" style="width:95%"></div></div>
+    <div class="progress-track"><div class="progress-fill" style="width:98%"></div></div>
     <div class="phases">
       <div class="phase" style="background:var(--green-light);border-color:var(--green-dark);color:var(--green-dark)">0 · Discovery</div>
       <div class="phase" style="background:var(--green-light);border-color:var(--green-dark);color:var(--green-dark)">1 · Conectores</div>
@@ -276,7 +276,7 @@
         </li>
         <li>
           <span class="check-mark new">★</span>
-          <span><strong>SIEG — nova API v1 implementada</strong> — reescrito para <code class="inline">api.sieg.com/api/v1</code> com JWT + X-API-Key. Credenciais configuradas. JWT retorna 401 — suporte acionado 22/04.</span>
+          <span><strong>SIEG — autenticado e baixando XMLs</strong> — JWT funcional (<code class="inline">X-Client-Id</code> + <code class="inline">X-Secret-Key</code> nos headers). NFe, NFSe e CTe baixando em lotes de 50 via ZIP. NFSe: 516 docs. NFe + CTe em andamento (~22k docs cada).</span>
         </li>
         <li>
           <span class="check-mark done">✓</span>
@@ -302,7 +302,7 @@
         </li>
         <li>
           <span class="check-mark info">!</span>
-          <strong>SIEG — JWT retorna 401</strong> — conector implementado, credenciais corretas, mas <code class="inline">create-jwt</code> retorna 401 "SecretKey e ClientId obrigatórios". Suporte SIEG acionado via WhatsApp 22/04. Aguardando resposta.
+          <strong>DRE por regime de competência</strong> — <code class="inline">fechamento.js</code> e <code class="inline">sheets.js</code> atualizados para usar NF-e SIEG como receita (competência). Planilha agora inclui reconciliação competência × caixa (Kamino).
         </li>
         <li>
           <span class="check-mark done">✓</span>
@@ -328,13 +328,13 @@
   <!-- ── BLOQUEADORES ── -->
   <div class="section-label">Bloqueadores</div>
 
-  <div class="blocker">
-    <div class="blocker-icon-wrap">!</div>
+  <div class="blocker resolved">
+    <div class="blocker-icon-wrap resolved">✓</div>
     <div class="blocker-body">
-      <div class="blocker-title">SIEG JWT — 401 "SecretKey e ClientId são obrigatórios"</div>
-      <div class="blocker-desc">Credenciais recebidas e configuradas corretamente no <code class="inline">.env</code>. Endpoint <code class="inline">POST /api/v1/create-jwt</code> retorna 401 independente do formato (header, body JSON, camelCase, PascalCase). Suporte SIEG acionado via WhatsApp 22/04. Aguardando formato correto de autenticação.</div>
+      <div class="blocker-title strikethrough">SIEG JWT — 401 "SecretKey e ClientId são obrigatórios"</div>
+      <div class="blocker-desc">Resolvido: credenciais devem ir nos headers HTTP como <code class="inline">X-Client-Id</code> e <code class="inline">X-Secret-Key</code> (não no body). Suporte SIEG enviou Postman Collection confirmando o formato. API Key regenerada. SIEG baixando NFe/NFSe/CTe com sucesso.</div>
     </div>
-    <span class="blocker-badge">Em resolução · 22/04</span>
+    <span class="blocker-badge resolved">Resolvido · 23/04</span>
   </div>
 
   <div class="blocker resolved">
