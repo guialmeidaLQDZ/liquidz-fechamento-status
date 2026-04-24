@@ -243,9 +243,9 @@
   <div class="progress-card">
     <div class="progress-meta">
       <span class="progress-meta-label">Avanço geral do projeto</span>
-      <span class="progress-meta-value">90% — Pipeline dez/2025 iniciado · SIEG outage · Bling reauth pendente</span>
+      <span class="progress-meta-value">92% — Aguardando acesso BigQuery (Gabi) · Fonte NF-e migrada para liquidz-448819</span>
     </div>
-    <div class="progress-track"><div class="progress-fill" style="width:90%"></div></div>
+    <div class="progress-track"><div class="progress-fill" style="width:92%"></div></div>
     <div class="phases">
       <div class="phase" style="background:var(--green-light);border-color:var(--green-dark);color:var(--green-dark)">0 · Discovery</div>
       <div class="phase" style="background:var(--green-light);border-color:var(--green-dark);color:var(--green-dark)">1 · Conectores</div>
@@ -264,7 +264,7 @@
       <ul class="checklist">
         <li>
           <span class="check-mark new">★</span>
-          <span><strong>Fevereiro/2026 — pipeline completo em 13 min</strong> — 21.888 NF-e Bling, R$ 7.945.451,45 recebimentos Kamino. Balancete + DRE gerados. Task Vanda: #86ah1z79w.</span>
+          <span><strong>Fevereiro/2026 — pipeline completo</strong> — Receita bruta R$ 9.039.080,04 (23.720 NF-e, situações 5+6). Balancete + DRE v1.0 gerados. Planilha enviada para Vanda.</span>
         </li>
         <li>
           <span class="check-mark new">★</span>
@@ -298,11 +298,11 @@
       <ul class="checklist">
         <li>
           <span class="check-mark info">!</span>
-          <strong>Validação com Vanda — fevereiro/2026</strong> — planilha enviada, aguardando confirmação dos números (R$ 7.945.451,45 recebimentos, 21.888 NF-e). Task ClickUp: #86ah1z79w.
+          <strong>Validação com Vanda — fevereiro/2026</strong> — DRE v1.0 gerada. Receita bruta: R$ 9.039.080,04 (23.720 NF-e, denegadas incluídas). Aguardando feedback da Vanda sobre os números.
         </li>
         <li>
-          <span class="check-mark info">!</span>
-          <strong>DRE por regime de competência</strong> — <code class="inline">fechamento.js</code> e <code class="inline">sheets.js</code> atualizados para usar NF-e SIEG como receita (competência). Planilha agora inclui reconciliação competência × caixa (Kamino).
+          <span class="check-mark new">★</span>
+          <strong>Fonte NF-e migrada para BigQuery</strong> — <code class="inline">bigquery-nfe.js</code> criado. Usa <code class="inline">liquidz-448819.bling.nfe</code> (Time de Dados), atualizado diariamente, sem rate limit. Decisão denegadas resolvida: situação IN (5, 6) — padrão oficial Liquidz.
         </li>
         <li>
           <span class="check-mark done">✓</span>
@@ -385,10 +385,28 @@
   <div class="blocker warning">
     <div class="blocker-icon-wrap warning">!</div>
     <div class="blocker-body">
-      <div class="blocker-title">SIEG — Outage parcial em baixar-xmls</div>
-      <div class="blocker-desc">Endpoint <code class="inline">POST /baixar-xmls</code> retornando HTTP 400 para todos os meses desde 23/04. JWT criado com sucesso — falha é no download de XMLs. Monitor automático a cada 2 min. Assim que recuperar, pipeline dez/2025 roda automaticamente.</div>
+      <div class="blocker-title">Acesso BigQuery — aguardando Service Account (Gabi)</div>
+      <div class="blocker-desc">Conector <code class="inline">bigquery-nfe.js</code> criado e pronto. Falta apenas a Service Account com permissão <code class="inline">BigQuery Data Viewer</code> no projeto <code class="inline">liquidz-448819</code>. Pedido enviado em 24/04. Quando chegar: <code class="inline">npm install</code> + configurar <code class="inline">BIGQUERY_SA_KEY_PATH</code> no .env + validar com fevereiro/2026.</div>
     </div>
-    <span class="blocker-badge warning">Em monitoramento</span>
+    <span class="blocker-badge warning">Aguardando Gabi</span>
+  </div>
+
+  <div class="blocker resolved">
+    <div class="blocker-icon-wrap resolved">✓</div>
+    <div class="blocker-body">
+      <div class="blocker-title strikethrough">SIEG — Outage parcial em baixar-xmls</div>
+      <div class="blocker-desc">Impacto neutralizado: fonte de NF-e migrada para BigQuery (<code class="inline">liquidz-448819.bling.nfe</code>). SIEG deixou de ser fonte primária de receita. Outage em <code class="inline">POST /baixar-xmls</code> desde 23/04 não bloqueia mais o pipeline.</div>
+    </div>
+    <span class="blocker-badge resolved">Neutralizado · 24/04</span>
+  </div>
+
+  <div class="blocker resolved">
+    <div class="blocker-icon-wrap resolved">✓</div>
+    <div class="blocker-body">
+      <div class="blocker-title strikethrough">Decisão: NF-e denegadas entram na receita bruta?</div>
+      <div class="blocker-desc">Resolvido via documentação interna (Time de Dados): padrão oficial Liquidz é <code class="inline">nfe_situacao IN (5, 6)</code>. Denegadas entram. Receita bruta Fev/2026 confirmada em R$ 9.039.080,04.</div>
+    </div>
+    <span class="blocker-badge resolved">Resolvido · 24/04</span>
   </div>
 
   <div class="blocker resolved">
@@ -572,10 +590,21 @@
       <div class="step-num urgent">→</div>
       <div class="step-body">
         <div class="step-title-row">
-          <span class="step-title">Validação com Vanda — fevereiro/2026</span>
-          <span class="step-tag today">Em andamento</span>
+          <span class="step-title">Acesso BigQuery — aguardando Gabi</span>
+          <span class="step-tag today">Aguardando</span>
         </div>
-        <div class="step-detail">Task no ClickUp (#86ah1z79w). Pipeline completo em 13 min: R$ 7.945.451,45 recebimentos | 21.888 NF-e Bling. Aguardando Vanda confirmar se bate com o balancete prévio.</div>
+        <div class="step-detail">Pedido enviado em 24/04. Quando chegar: <code class="inline">npm install</code> + <code class="inline">BIGQUERY_SA_KEY_PATH</code> no .env + rodar <code class="inline">npm run bq-nfe 2026-02</code> para validar. Esperado: R$ 9.039.080,04 · 23.720 NF-e.</div>
+      </div>
+    </div>
+
+    <div class="next-item">
+      <div class="step-num secondary">→</div>
+      <div class="step-body">
+        <div class="step-title-row">
+          <span class="step-title">Validação com Vanda — DRE v1.1 fevereiro/2026</span>
+          <span class="step-tag today">Pendente BigQuery</span>
+        </div>
+        <div class="step-detail">Após confirmar acesso BigQuery, regenerar planilha com receita bruta atualizada (R$ 9.039.080,04) e enviar para Vanda validar o fechamento completo.</div>
       </div>
     </div>
 
